@@ -1,26 +1,93 @@
 const mongoose = require('mongoose');
-const User = require('../models/user');
+const Users = require('../models/user');
 
-const RequestSchema = mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+// Validity Schema
+const validitySchema = module.exports = mongoose.Schema({
+    isValid: {
+        type: Boolean,
+        default: false
+    },
+    issuedOn: {
+        type: Date,
+        default: Date.now,
+        require: true
+    },
+    validForHrs: {
+        type: Number,
+        default: '3',
+    }
+});
+
+// Address Schema
+const addressSchema = module.exports = mongoose.Schema({
+    state: String,
+    city: String,
+    street: String
+});
+
+// Quantity Schema
+const quantitySchema = module.exports = mongoose.Schema({
+    number: {
+        type: Number
+    },
+    items: [{
+        name: String,
+        quantity: String
+    }],
+    description: {
+        type: String
+    }
+});
+
+// Request Schema
+const RequestSchema = module.exports = mongoose.Schema({
     type: {
+        type: String,
+        enum: ['donate', 'accept', 'money'],
+        require: true
+    },
+    // issUser: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Users',
+    //     require: true
+    // },
+    userTo: {
         type: String,
         require: true
     },
+    userFrom: {
+        type: String
+    },
     quantity: {
-        noOfPersons: {
-            type: Number
-        }
+        type: String,
+        require: true
     },
     address: {
         type: String
+    },
+    status: {
+        type: String,
+        enum: ['completed', 'ongoing'],
+        default: 'ongoing'
+    },
+    validity: {
+        type: validitySchema,
+        require: true
+    },
+    issDate: {
+        type: Date,
+        default: Date.now(),
+        require: true
     }
 });
 
 const Request = module.exports = mongoose.model('Request', RequestSchema);
 
-module.exports.getRequestsAll = function (callback) {
-    Request.find(callback);
+module.exports.getAllAcceptRequests = function (callback) {
+    let query = {
+        type: 'accept'
+    };
+    Request.find(query, callback);
 };
 
 module.exports.getRequestById = function (id, callback) {
@@ -36,4 +103,13 @@ module.exports.getRequestsByUserId = function (userId, callback) {
 
 module.exports.addRequest = function (newRequset, callback) {
     newRequset.save(callback);
+};
+
+module.exports.getUserDonations = function (username, callback) {
+    const query = {
+        type: 'donate',
+        userFrom: username
+    };
+
+    Request.find(query, callback);
 };

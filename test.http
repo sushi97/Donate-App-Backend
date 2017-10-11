@@ -1,0 +1,77 @@
+GET http://localhost:3000/
+
+
+### Register a new User
+
+POST http://localhost:3000/users/register
+Content-Type: application/json
+
+{
+    "name": "Sushrut",
+    "email": "sushrutshimpi@gmail.com",
+    "password": "pass123",
+    "phoneNo": "6847566325",
+    "city": "Pune"
+}
+
+
+### Login a User
+
+POST http://localhost:3000/users/authenticate
+Content-Type: application/json
+
+{
+	"email":"sushrutshimpi@gmail.com",
+	"password":"pass123"
+}
+
+
+### Access User's profile
+
+GET http://localhost:3000/users/profile
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZDdkZDE0YWMwOGZjMzE1OWQ5MWJhNSIsIm5hbWUiOiJTdXNocnV0IiwiZW1haWwiOiJzdXNocnV0c2hpbXBpQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoic3VzaGk5NyIsInBhc3N3b3JkIjoiJDJhJDEwJGZYN2Mud1NZZ3ZiNm1zRFZSSnpMOS5CeC9kYk1vMnBLR1dlT3ZzY3I0RVpoSk16SExCbnl1IiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZX0sImlhdCI6MTUwNzQ2NzA3MCwiZXhwIjoxNTA4MDcxODcwfQ.p_09omoiYIMWct4txNl8VsWEQG8GyHERNrgLAuVkSgI
+
+
+### Access another User's profile
+
+GET http://localhost:3000/users/profile/59d8a81df15e3031233ee7fb
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZDdkZDE0YWMwOGZjMzE1OWQ5MWJhNSIsIm5hbWUiOiJTdXNocnV0IiwiZW1haWwiOiJzdXNocnV0c2hpbXBpQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoic3VzaGk5NyIsInBhc3N3b3JkIjoiJDJhJDEwJGZYN2Mud1NZZ3ZiNm1zRFZSSnpMOS5CeC9kYk1vMnBLR1dlT3ZzY3I0RVpoSk16SExCbnl1IiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZX0sImlhdCI6MTUwNzQ2NzA3MCwiZXhwIjoxNTA4MDcxODcwfQ.p_09omoiYIMWct4txNl8VsWEQG8GyHERNrgLAuVkSgI
+
+
+### Udate User's email
+
+PUT http://localhost:3000/users/profile/email
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZGE0M2JlZDRlZjJkM2QxMzA4YTAzMCIsIm5hbWUiOiJHYXVyYXYiLCJlbWFpbCI6ImdhdXJhdkBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImdhdXJhdiIsInBhc3N3b3JkIjoiJDJhJDEwJE9qV28uYURUdk02bkd4TTRKY3VUOXU5cHZQNDkvVjZIUGFJOEx4SGN6MVdxVEVCVmV1R2tlIiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZSwiYWRkcmVzcyI6W119LCJpYXQiOjE1MDc0Nzc3ODMsImV4cCI6MTUwODA4MjU4M30._Zy8yfkVSZ7_xWRiRaEKnyZH-m5uEoHGdeClepi-Xb0
+Content-Type: application/json
+
+{
+    "email": "gauravsawant123@gmail.com"
+}
+
+
+### GET all Accept requests
+
+GET http://localhost:3000/requests/accept
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZGE0M2JlZDRlZjJkM2QxMzA4YTAzMCIsIm5hbWUiOiJHYXVyYXYiLCJlbWFpbCI6ImdhdXJhdkBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImdhdXJhdiIsInBhc3N3b3JkIjoiJDJhJDEwJE9qV28uYURUdk02bkd4TTRKY3VUOXU5cHZQNDkvVjZIUGFJOEx4SGN6MVdxVEVCVmV1R2tlIiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZSwiYWRkcmVzcyI6W119LCJpYXQiOjE1MDc0Nzc3ODMsImV4cCI6MTUwODA4MjU4M30._Zy8yfkVSZ7_xWRiRaEKnyZH-m5uEoHGdeClepi-Xb0
+
+
+### GET All NGOs
+
+GET http://localhost:3000/users/ngos
+
+
+### Add a new NGO
+
+POST http://localhost:3000/users/ngos
+Content-Type: application/json
+
+{
+    "name": "fxfckgkk",
+    "amount": "90",
+    "address": "Pune"
+}
+
+
+### GET all User's Donations requests
+
+GET http://localhost:3000/requests/donate/Sushrut

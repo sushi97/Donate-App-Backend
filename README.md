@@ -29,6 +29,8 @@ If faced connection problems try checking the path.
 
 ## REST Api
 
+See the text.html file for the API.
+
 ### For registering user
 
 Send a POST request, with header "content-type" set to "Application/json" and body:

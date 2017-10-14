@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const Users = require('../models/user');
 const Requests = require('../models/request');
+const emailVerfier = require('../util/email_verfi');
 
 
 // GET all Accept requests
@@ -31,6 +32,9 @@ router.post('/donate', (req, res, next) => {
         address: req.body.address
         //validity: req.body.validity
     });
+
+    emailVerfier.sendAvaliableDonerEmail('vishvanatarajan@gmail.com', req.body.userFrom);
+
     console.log(newRequest);
     Requests.addRequest(newRequest, (err, request) => {
         if (err) {
@@ -50,7 +54,7 @@ router.post('/donate', (req, res, next) => {
 
 
 // POST a Accept request
-router.post('/aaccept', (req, res, next) => {
+router.post('/accept', (req, res, next) => {
     var contype = req.headers['content-type'];
     if (!contype || contype.indexOf('application/json') !== 0)
       return res.send(400);

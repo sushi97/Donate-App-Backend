@@ -100,11 +100,10 @@ router.get('/profile', passport.authenticate('jwt', {
     session: false
 }), (req, res, next) => {
     res.json([{
-        user: {
             name: req.user.name,
             email: req.user.email,
-            address: req.user.address
-        }
+            city: req.user.city,
+            phoneNo: req.user.phoneNo
     }]);
 });
 
@@ -117,6 +116,40 @@ router.put('/profile/email', passport.authenticate('jwt', {
         return res.send(400);
 
     req.user.email = req.body.email;
+    req.user.save((err, user, numAffected) => {
+        if (err) {
+            console.log(err);
+            return res.json([{
+                success: false,
+                msg: 'Internal error. Value not updated.'
+            }]);
+        } else if (numAffected == 0) {
+            console.log(err);
+            return res.json([{
+                success: false,
+                msg: 'Already present'
+            }]);
+        } else {
+            return res.json([{
+                success: true,
+                msg: 'Sucessfully Updated.'
+            }]);
+        }
+    });
+});
+
+// Update User's profile
+router.put('/profile', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    var contype = req.headers['content-type'];
+    if (!contype || contype.indexOf('application/json') !== 0)
+        return res.send(400);
+
+        if(req.body.name) req.user.name = req.body.name;
+        if(req.body.phoneNo) req.user.phoneNo = req.body.phoneNo;
+        if(req.body.city) req.user.city = req.body.city;
+    
     req.user.save((err, user, numAffected) => {
         if (err) {
             console.log(err);

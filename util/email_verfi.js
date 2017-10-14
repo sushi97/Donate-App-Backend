@@ -64,3 +64,45 @@ module.exports.sendVerificationEmail = function (toUser) {
 module.exports.verifyEmail = function (token, callback) {
     verToken.verifyToken(token, callback);
 };
+
+
+module.exports.sendAvaliableDonerEmail = function (email, fromUser) {
+    // setup email data with unicode symbols
+    //const email = toUser.email;
+
+    // const token = jwt.sign({
+    //     data: toUser
+    // }, config.secret, {
+    //     expiresIn: 604800 // 1 week
+    // });
+
+    const ghtml = '<p>Hello from Donate App, you have a new doner. From Doner: ' + fromUser + '</p>';
+
+    let mailOptions = {
+        from: '"Donate App" <no-reply@donate.com>', // sender address
+        to: email, // list of receivers
+        subject: 'Contact From Donate App', // Subject line
+        text: 'Hello from Donate App, you have a new doner.', // plain text body
+        html: ghtml // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+
+        // let newVerToken = new verToken({
+        //     userId: toUser._id,
+        //     token: token
+        // });
+
+        // verToken.addToken(newVerToken, (err, newVerToken) => {
+        //     if(err) {
+        //         return console.log(err);
+        //     }
+        // });
+
+    });
+};

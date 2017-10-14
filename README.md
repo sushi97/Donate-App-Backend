@@ -29,8 +29,8 @@ If faced connection problems try checking the path.
 
 ## REST Api
 
-See the [text.http](text.http) file for the updated API. Following is obselete.
-Run the http requests using postman extention in chrome or rest extention in vs code editor with the [text.http](text.http) to get an example of response.
+See the [test.http](test.http) file for the updated API. Following is obselete.
+Run the http requests using postman extention in chrome or rest extention in vs code editor with the [test.http](test.http) to get an example of response.
 
 ### For registering user
 

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const Users = require('../models/user');
 const Requests = require('../models/request');
-const emailVerfier = require('../util/email_verfi');
+const emailer = require('../util/emailer');
 
 
 // GET all Accept requests
@@ -36,7 +36,7 @@ router.post('/donate', passport.authenticate('jwt', {
         // validity: req.body.validity
     });
 
-    emailVerfier.sendAvaliableDonerEmail('sushrutshimpi@gmail.com', req.body.userFrom);
+    emailer.sendAvaliableDonerEmail('sushrutshimpi@gmail.com', req.body.userFrom);
 
     // console.log(newRequest);
     Requests.addRequest(newRequest, (err, request) => {

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 const NGOs = require('../models/ngos');
-const emailVerfier = require('../util/email_verfi');
+const emailer = require('../util/emailer');
 const verOtp = require('../models/ver_otp');
 
 // Register
@@ -39,7 +39,7 @@ router.post('/register', (req, res, next) => {
                         token: 'Failed to register user'
                     });
                 } else {
-                    emailVerfier.sendVerificationEmail(user);
+                    emailer.sendVerificationEmail(user);
 
                     res.json({
                         success: true,
@@ -178,7 +178,7 @@ router.put('/profile', passport.authenticate('jwt', {
 router.get('/profile/email/verify/:token', (req, res, next) => {
     const token = req.params.token;
 
-    emailVerfier.verifyEmail(token, (err, verToken) => {
+    emailer.verifyEmail(token, (err, verToken) => {
         if (err) {
             console.log(err);
             return res.send("Internal Server Error");
@@ -323,7 +323,7 @@ router.post('/forgot/:email', (req, res, next) => {
                 //         }]);
                 // });
 
-                emailVerfier.sendOTPEmail(user.email, otp, (err, info) => {
+                emailer.sendOTPEmail(user.email, otp, (err, info) => {
                     if (err) {
                         console.log(err);
                         return res.json([{

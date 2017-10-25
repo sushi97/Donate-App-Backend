@@ -19,36 +19,39 @@ router.get('/accept', passport.authenticate('jwt', {
 
 
 // POST a Donate request
-router.post('/donate', (req, res, next) => {
+router.post('/donate', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
     var contype = req.headers['content-type'];
     if (!contype || contype.indexOf('application/json') !== 0)
-      return res.send(400);
+        return res.send(400);
 
     let newRequest = new Requests({
         type: 'donate',
         userTo: req.body.userTo,
-        userFrom: req.body.userFrom,
+        userFrom: req.user.name,
         quantity: req.body.quantity,
+        items: req.body.items,
         address: req.body.address
-        //validity: req.body.validity
+        // validity: req.body.validity
     });
 
-    emailVerfier.sendAvaliableDonerEmail('vishvanatarajan@gmail.com', req.body.userFrom);
+    emailVerfier.sendAvaliableDonerEmail('sushrutshimpi@gmail.com', req.body.userFrom);
 
-    console.log(newRequest);
+    // console.log(newRequest);
     Requests.addRequest(newRequest, (err, request) => {
         if (err) {
             res.json([{
-              success: false,
-              msg: 'Failed to accept request'
+                success: false,
+                msg: 'Failed to accept request'
             }]);
-          } else {
+        } else {
             res.json([{
-              success: true,
-              msg: 'Request accepted',
-              id: request._id
+                success: true,
+                msg: 'Request accepted',
+                id: request._id
             }]);
-          }
+        }
     });
 });
 
@@ -57,12 +60,13 @@ router.post('/donate', (req, res, next) => {
 router.post('/accept', (req, res, next) => {
     var contype = req.headers['content-type'];
     if (!contype || contype.indexOf('application/json') !== 0)
-      return res.send(400);
+        return res.send(400);
 
     let newRequest = new Requests({
         type: 'accept',
         userTo: req.body.userTo,
         quantity: req.body.quantity,
+        items: req.body.items,
         address: req.body.address
         //validity: req.body.validity
     });
@@ -70,22 +74,24 @@ router.post('/accept', (req, res, next) => {
     Requests.addRequest(newRequest, (err, request) => {
         if (err) {
             res.json([{
-              success: false,
-              msg: 'Failed to accept request'
+                success: false,
+                msg: 'Failed to accept request'
             }]);
-          } else {
+        } else {
             res.json([{
-              success: true,
-              msg: 'Request accepted',
-              id: request._id
+                success: true,
+                msg: 'Request accepted',
+                id: request._id
             }]);
-          }
+        }
     });
 });
 
 // GET all User's Donations requests
-router.get('/donate/:username', (req, res, next) => {
-    Requests.getUserDonations(req.params.username, (err, requests) => {
+router.get('/donate', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    Requests.getUserDonations(req.user.name, (err, requests) => {
         res.json(requests);
     });
 });

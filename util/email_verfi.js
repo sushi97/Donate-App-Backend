@@ -53,7 +53,7 @@ module.exports.sendVerificationEmail = function (toUser) {
         });
 
         verToken.addToken(newVerToken, (err, newVerToken) => {
-            if(err) {
+            if (err) {
                 return console.log(err);
             }
         });
@@ -105,4 +105,20 @@ module.exports.sendAvaliableDonerEmail = function (email, fromUser) {
         // });
 
     });
+};
+
+module.exports.sendOTPEmail = function (toUserEmail, otp, callback) {
+
+    const ghtml = '<p>Hello from Donate App. OTP: ' + otp + '</p>';
+
+    let mailOptions = {
+        from: '"Donate App" <no-reply@donate.com>', // sender address
+        to: toUserEmail, // list of receivers
+        subject: 'Contact From Donate App', // Subject line
+        text: 'Hello from Donate App, you have a new doner.', // plain text body
+        html: ghtml // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, callback);
 };

@@ -30,13 +30,17 @@ const quantitySchema = module.exports = mongoose.Schema({
     number: {
         type: Number
     },
-    items: [{
-        name: String,
-        quantity: String
-    }],
-    description: {
-        type: String
+    items: {
+        type: [String],
+        require: true
     }
+    // items: [{
+    //     name: String,
+    //     quantity: String
+    // }],
+    // description: {
+    //     type: String
+    // }
 });
 
 // Request Schema
@@ -56,11 +60,15 @@ const RequestSchema = module.exports = mongoose.Schema({
         require: true
     },
     userFrom: {
-        type: String
-    },
-    quantity: {
         type: String,
         require: true
+    },
+    quantity: {
+        type: Number,
+        require: true
+    },
+    items:{
+        type: [String]
     },
     address: {
         type: String

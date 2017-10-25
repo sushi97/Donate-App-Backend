@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 const NGOs = require('../models/ngos');
 const emailVerfier = require('../util/email_verfi');
+const verOtp = require('../models/ver_otp');
 
 // Register
 router.post('/register', (req, res, next) => {
@@ -38,7 +40,7 @@ router.post('/register', (req, res, next) => {
                     });
                 } else {
                     emailVerfier.sendVerificationEmail(user);
-                    
+
                     res.json({
                         success: true,
                         token: 'User registered'
@@ -100,10 +102,10 @@ router.get('/profile', passport.authenticate('jwt', {
     session: false
 }), (req, res, next) => {
     res.json([{
-            name: req.user.name,
-            email: req.user.email,
-            city: req.user.city,
-            phoneNo: req.user.phoneNo
+        name: req.user.name,
+        email: req.user.email,
+        city: req.user.city,
+        phoneNo: req.user.phoneNo
     }]);
 });
 
@@ -146,10 +148,10 @@ router.put('/profile', passport.authenticate('jwt', {
     if (!contype || contype.indexOf('application/json') !== 0)
         return res.send(400);
 
-        if(req.body.name) req.user.name = req.body.name;
-        if(req.body.phoneNo) req.user.phoneNo = req.body.phoneNo;
-        if(req.body.city) req.user.city = req.body.city;
-    
+    if (req.body.name) req.user.name = req.body.name;
+    if (req.body.phoneNo) req.user.phoneNo = req.body.phoneNo;
+    if (req.body.city) req.user.city = req.body.city;
+
     req.user.save((err, user, numAffected) => {
         if (err) {
             console.log(err);
@@ -177,20 +179,20 @@ router.get('/profile/email/verify/:token', (req, res, next) => {
     const token = req.params.token;
 
     emailVerfier.verifyEmail(token, (err, verToken) => {
-        if(err) {
+        if (err) {
             console.log(err);
             return res.send("Internal Server Error");
             // return res.json({
             //     success: false,
             //     msg: "Internal server Error"
             // });
-        }else if(!verToken) {
+        } else if (!verToken) {
             return res.send("Invalid link.");
             // return res.json({
             //     success: false,
             //     msg: "Not a valid token"
             // });
-        }else if(verToken) {
+        } else if (verToken) {
             return res.send("Validated.");
             // return res.json({
             //     success: true,
@@ -235,18 +237,18 @@ router.get('/profile/:id', passport.authenticate('jwt', {
 // GET All NGOs
 router.get('/ngos', (req, res, next) => {
     NGOs.getNGOs((err, ngos) => {
-        if(err) {
+        if (err) {
             console.log(err);
             return res.json([{
                 success: false,
                 msg: "Internal error."
             }]);
-        }else if(!ngos) {
+        } else if (!ngos) {
             return res.json([{
                 success: false,
                 msg: "Empty Collection"
             }]);
-        }else {
+        } else {
             res.json(ngos);
         }
 
@@ -275,6 +277,161 @@ router.post('/ngos', (req, res, next) => {
             res.json([{
                 success: true,
                 msg: 'User registered'
+            }]);
+        }
+    });
+});
+
+
+// POST a forgot password request
+router.post('/forgot/:email', (req, res, next) => {
+    User.getUserByEmail(req.params.email, (err, user) => {
+        if (err) {
+            return res.json([{
+                success: false,
+                msg: 'Internal error'
+            }]);
+        } else {
+            if (user) {
+                let otp = Math.floor(Math.random() * 1000000);
+
+                let newVerOtp = new verOtp({
+                    email: user.email,
+                    otp: otp
+                });
+
+                verOtp.addVerOtp(newVerOtp, (err, verOtp) => {
+                    if (err) {
+                        console.log(err);
+                        return res.json([{
+                            success: false,
+                            msg: 'Internal error'
+                        }]);
+
+                    }
+                });
+
+                // user.resetOtp = {
+                //     value: otp,
+                //     createdAt: new Date()
+                // };
+                // user.save((err, user) => {
+                //     if (err)
+                //         return res.json([{
+                //             success: false,
+                //             msg: 'Internal error'
+                //         }]);
+                // });
+
+                emailVerfier.sendOTPEmail(user.email, otp, (err, info) => {
+                    if (err) {
+                        console.log(err);
+                        return res.json([{
+                            success: false,
+                            msg: 'Internal error'
+                        }]);
+
+                    } else {
+                        console.log('Message sent: %s', info.messageId);
+                        return res.json([{
+                            success: true,
+                            msg: 'OTP sent to registered email'
+                        }]);
+                    }
+                });
+
+            } else {
+                return res.json([{
+                    success: false,
+                    msg: 'User not found'
+                }]);
+            }
+        }
+    });
+});
+
+// Check OTP and get token
+router.post('/checkOtp', (req, res, next) => {
+    var contype = req.headers['content-type'];
+    if (!contype || contype.indexOf('application/json') !== 0) {
+        return res.send(400);
+    }
+
+    console.log(req.body.email);
+    verOtp.getByEmail(req.body.email, (err, verOtp) => {
+        if (err) {
+            return res.json([{
+                success: false,
+                msg: 'Internal Error'
+            }]);
+        } else {
+            if (verOtp) {
+                console.log(req.body.otp);
+                console.log(verOtp);
+                if (req.body.otp == verOtp.otp) {
+                    User.getUserByEmail(verOtp.email, (err, user) => {
+                        if (err) {
+                            return res.json([{
+                                success: false,
+                                msg: 'Internal Error'
+                            }]);
+                        } else {
+                            if (user) {
+                                let token = jwt.sign({
+                                    data: user
+                                }, config.secret, {
+                                    expiresIn: 60 * 10
+                                });
+    
+                                return res.json([{
+                                    success: true,
+                                    token: 'bearer ' + token
+                                }]);
+                            } else {
+                                return res.json([{
+                                    success: false,
+                                    msg: 'User not found'
+                                }]);
+                            }
+                        } 
+                    });
+                } else {
+                    return res.json([{
+                        success: false,
+                        msg: 'Otp mismatch'
+                    }]);
+                }
+            } else {
+                return res.json([{
+                    success: false,
+                    msg: 'Otp expired'
+                }]);
+            }
+        }
+    });
+});
+
+router.put('/profile/password', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    var contype = req.headers['content-type'];
+    if (!contype || contype.indexOf('application/json') !== 0) {
+        return res.send(400);
+    }
+
+    let user = req.user;
+    user.password = req.body.password;
+    User.addUser(user, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.json([{
+                success: false,
+                msg: 'Internal Error'
+            }]);
+        } else {
+            return res.json([{
+                success: true,
+                msg: 'Sucessfully Changed'
             }]);
         }
     });

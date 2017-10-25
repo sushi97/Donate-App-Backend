@@ -6,6 +6,10 @@ const NGOSchema = new Schema({
         type: String,
         require: true
     },
+    emailId: {
+        type: String,
+        require: true
+    },
     amount: {
         type: Number,
         require: true

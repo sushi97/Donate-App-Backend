@@ -1,6 +1,5 @@
 GET http://localhost:3000/
 
-
 ### Register a new User
 
 POST http://localhost:3000/users/register
@@ -14,7 +13,6 @@ Content-Type: application/json
     "city": "Pune"
 }
 
-
 ### Login a User
 
 POST http://localhost:3000/users/authenticate
@@ -22,21 +20,18 @@ Content-Type: application/json
 
 {
 	"email":"sushrutshimpi@gmail.com",
-	"password":"pass123"
+	"password":"sushrut"
 }
-
 
 ### Access User's profile
 
 GET http://localhost:3000/users/profile
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZGU3MTg4ZTk1Zjc4MGY0NmJmN2FiMSIsIm5hbWUiOiJTdXNocnV0IiwiZW1haWwiOiJzdXNocnV0c2hpbXBpQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEwJDZtN04vUDNOQjVEMWJJd2lQSzFmdS5GTmdsQ3BsU2tiUU9aSU9rVVZoenZlU09hcFZwRjVHIiwicGhvbmVObyI6Njg0NzU2NjMyNSwiY2l0eSI6IlB1bmUiLCJfX3YiOjAsInJlcXVlc3RzIjpbXSwicmVjZWl2ZXIiOmZhbHNlLCJhZGRyZXNzIjpbXX0sImlhdCI6MTUwNzc4MzQ4MCwiZXhwIjoxNTA4Mzg4MjgwfQ.51ykafMWHtsPh3qli3mYZsi-jvyaewWvkhQoK-e8yVQ
 
-
 ### Access another User's profile
 
 GET http://localhost:3000/users/profile/59d8a81df15e3031233ee7fb
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZDdkZDE0YWMwOGZjMzE1OWQ5MWJhNSIsIm5hbWUiOiJTdXNocnV0IiwiZW1haWwiOiJzdXNocnV0c2hpbXBpQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoic3VzaGk5NyIsInBhc3N3b3JkIjoiJDJhJDEwJGZYN2Mud1NZZ3ZiNm1zRFZSSnpMOS5CeC9kYk1vMnBLR1dlT3ZzY3I0RVpoSk16SExCbnl1IiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZX0sImlhdCI6MTUwNzQ2NzA3MCwiZXhwIjoxNTA4MDcxODcwfQ.p_09omoiYIMWct4txNl8VsWEQG8GyHERNrgLAuVkSgI
-
 
 ### Udate User's email
 
@@ -63,10 +58,8 @@ Content-Type: application/json
 GET http://localhost:3000/requests/accept
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZGE0M2JlZDRlZjJkM2QxMzA4YTAzMCIsIm5hbWUiOiJHYXVyYXYiLCJlbWFpbCI6ImdhdXJhdkBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImdhdXJhdiIsInBhc3N3b3JkIjoiJDJhJDEwJE9qV28uYURUdk02bkd4TTRKY3VUOXU5cHZQNDkvVjZIUGFJOEx4SGN6MVdxVEVCVmV1R2tlIiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZSwiYWRkcmVzcyI6W119LCJpYXQiOjE1MDc0Nzc3ODMsImV4cCI6MTUwODA4MjU4M30._Zy8yfkVSZ7_xWRiRaEKnyZH-m5uEoHGdeClepi-Xb0
 
-
 ### GET All NGOs
 GET http://localhost:3000/users/ngos
-
 
 ### Add a new NGO
 POST http://localhost:3000/users/ngos
@@ -78,18 +71,39 @@ Content-Type: application/json
     "address": "Pune"
 }
 
-
 ### GET all User's Donations requests
-GET http://localhost:3000/requests/donate/Sushrut
-
+GET http://localhost:3000/requests/donate
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZGU3MTg4ZTk1Zjc4MGY0NmJmN2FiMSIsIm5hbWUiOiJTdXNocnV0IFNoaW1waSIsImVtYWlsIjoic3VzaHJ1dHNoaW1waUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCQ2bTdOL1AzTkI1RDFiSXdpUEsxZnUuRk5nbENwbFNrYlFPWklPa1VWaHp2ZVNPYXBWcEY1RyIsInBob25lTm8iOjY4NDc1NjYzMjUsImNpdHkiOiJQdW5lIiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZSwiYWRkcmVzcyI6W119LCJpYXQiOjE1MDg4MjY5MzUsImV4cCI6MTUwOTQzMTczNX0.CTfDIVVN0cD461eRv1qPNHvoshuJPdPg04JONgvsRfo
 
 ### POST a Donate request
 POST http://localhost:3000/requests/donate
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZGU3MTg4ZTk1Zjc4MGY0NmJmN2FiMSIsIm5hbWUiOiJTdXNocnV0IFNoaW1waSIsImVtYWlsIjoic3VzaHJ1dHNoaW1waUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCQ2bTdOL1AzTkI1RDFiSXdpUEsxZnUuRk5nbENwbFNrYlFPWklPa1VWaHp2ZVNPYXBWcEY1RyIsInBob25lTm8iOjY4NDc1NjYzMjUsImNpdHkiOiJQdW5lIiwiX192IjowLCJyZXF1ZXN0cyI6W10sInJlY2VpdmVyIjpmYWxzZSwiYWRkcmVzcyI6W119LCJpYXQiOjE1MDg4MjY5MzUsImV4cCI6MTUwOTQzMTczNX0.CTfDIVVN0cD461eRv1qPNHvoshuJPdPg04JONgvsRfo
 
 {
     "userTo":"uihssdfg",
-    "userFrom":"Sushrut",
-    "quantity":"36",
+    "quantity":"4",
+    "items":["dal", "chawal"],
     "address":"Pune"
+}
+
+### POST a forgot password request
+POST http://localhost:3000/users/forgot/sushrutshimpi@gmail.com
+
+### Check OTP and get token
+POST http://localhost:3000/users/checkOtp
+Content-Type: application/json
+
+{
+    "email":"sushrutshimpi@gmail.com",
+    "otp":"898009"
+}
+
+### Change User passowrd
+PUT http://localhost:3000/users/profile/password
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjU5ZWY5ZDI1YTYzMjEyMGJiYmRiNTMzNyIsIm5hbWUiOiJTdXNocnV0IiwiZW1haWwiOiJzdXNocnV0c2hpbXBpQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEwJEFrcDJtNjJ3WVBNNy8uTGU0WDZPUU85RTRvbWZOaFpCTi5PZFVGZ3QzZndwVDdZTW1XR0RxIiwicGhvbmVObyI6Njg0NzU2NjMyNSwiY2l0eSI6IlB1bmUiLCJfX3YiOjAsInJlcXVlc3RzIjpbXSwicmVjZWl2ZXIiOmZhbHNlLCJhZGRyZXNzIjpbXX0sImlhdCI6MTUwODkzMzY5MiwiZXhwIjoxNTA4OTM0MjkyfQ.q1D85jf4q77I37CSQs_uDle7mcvcVUHzl6krxOtXiB4
+
+{
+    "password":"sushrut"
 }

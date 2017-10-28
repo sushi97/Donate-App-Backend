@@ -293,23 +293,13 @@ router.post('/forgot/:email', (req, res, next) => {
             }]);
         } else {
             if (user) {
-                let otp = Math.floor(Math.random() * 1000000);
+                let otp = Math.floor(100000 + Math.random() * 900000);
 
                 let newVerOtp = new verOtp({
                     email: user.email,
                     otp: otp
                 });
 
-                verOtp.addVerOtp(newVerOtp, (err, verOtp) => {
-                    if (err) {
-                        console.log(err);
-                        return res.json([{
-                            success: false,
-                            msg: 'Internal error'
-                        }]);
-
-                    }
-                });
 
                 // user.resetOtp = {
                 //     value: otp,
@@ -328,15 +318,57 @@ router.post('/forgot/:email', (req, res, next) => {
                         console.log(err);
                         return res.json([{
                             success: false,
+                            code: 0,
                             msg: 'Internal error'
                         }]);
 
                     } else {
                         console.log('Message sent: %s', info.messageId);
-                        return res.json([{
-                            success: true,
-                            msg: 'OTP sent to registered email'
-                        }]);
+
+                        verOtp.addVerOtp(newVerOtp, (err, verOtpi) => {
+                            if (err) {
+                                if(err.name === 'MongoError' && err.code === 11000) {
+                                    verOtp.getByEmail(newVerOtp.email, (err, verOtpi) => {
+                                        if(err) {
+                                            console.log(err);
+                                            return res.json([{
+                                                success: false,
+                                                msg: 'Internal error'
+                                            }]);
+                                        } else {
+                                            verOtpi.otp = newVerOtp.otp;
+                                            verOtpi.createdAt = new Date();
+                                            verOtpi.save((err, verOtp) => {
+                                                if(err) {
+                                                    console.log(err);
+                                                    return res.json([{
+                                                        success: false,
+                                                        msg: 'Internal error'
+                                                    }]);
+                                                }else {
+                                                    return res.json([{
+                                                        success: true,
+                                                        msg: 'OTP sent to registered email'
+                                                    }]);
+                                                }
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    console.log(err);
+                                    return res.json([{
+                                        success: false,
+                                        msg: 'Internal error'
+                                    }]);
+                                }
+        
+                            }else {
+                                return res.json([{
+                                    success: true,
+                                    msg: 'OTP sent to registered email'
+                                }]);
+                            }
+                        });
                     }
                 });
 
@@ -366,8 +398,8 @@ router.post('/checkOtp', (req, res, next) => {
             }]);
         } else {
             if (verOtp) {
-                console.log(req.body.otp);
-                console.log(verOtp);
+                // console.log(req.body.otp);
+                // console.log(verOtp);
                 if (req.body.otp == verOtp.otp) {
                     User.getUserByEmail(verOtp.email, (err, user) => {
                         if (err) {
@@ -411,6 +443,7 @@ router.post('/checkOtp', (req, res, next) => {
     });
 });
 
+// Reset Passwrd
 router.put('/profile/password', passport.authenticate('jwt', {
     session: false
 }), (req, res, next) => {

@@ -13,7 +13,7 @@ const verOtpSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        expires: 600,
+        expires: 60*10,
         default: Date.now()
     }
 });

@@ -36,7 +36,7 @@ router.post('/donate', passport.authenticate('jwt', {
         // validity: req.body.validity
     });
 
-    emailer.sendAvaliableDonerEmail('sushrutshimpi@gmail.com', req.body.userFrom);
+    emailer.sendAvaliableDonerEmail(config.ngoMailId, newRequest.userFrom);
 
     // console.log(newRequest);
     Requests.addRequest(newRequest, (err, request) => {

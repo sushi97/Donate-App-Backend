@@ -1,6 +1,7 @@
 module.exports = {
   database: 'mongodb://localhost:27017/meanauth',
   secret: 'yoursecret',
+  ngoMailId: 'sushrutshimpi@gmail.com',
   gmail: {
     clientID: "553697024488-slqed5cqrg2qelou0i5u95l7van8c1bk.apps.googleusercontent.com",
     secret: "uZ3dpBczTNpkYCEKC9DXCn25",

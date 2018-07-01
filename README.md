@@ -1,6 +1,6 @@
 # Donate App Backend
 
-Backend of Android app that reimagines the way of donating food by connecting the donor and receiver in a requirement/available pattern. The backend is written in NodeJS with 2FA authentication and automatic mailing.
+Backend of [Android app](https://github.com/sushi97/DonATE_Final) that reimagines the way of donating food by connecting the donor and receiver in a requirement/available pattern. The backend is written in NodeJS with 2FA authentication and automatic mailing.
 
 ## Getting Started
 
